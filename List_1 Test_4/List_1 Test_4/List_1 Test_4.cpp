@@ -1,19 +1,22 @@
 ﻿#include <iostream>
 using namespace std;
 
+#pragma region Sparse_List
 template <typename T>
-class List {
+class Sparse_List {
 
 	template <typename T>
 	class Node {
 
 	public:
 		T data;
+		int index;
 		Node* pNext;
 
 		//Node constructor
-		Node(T data = T(), Node* pNext = nullptr) {
+		Node(T data = T(), int index = NULL, Node* pNext = nullptr) {
 			this->data = data;
+			this->index = index;
 			this->pNext = pNext;
 		}
 	};
@@ -21,51 +24,53 @@ class List {
 	int Size;
 	Node<T>* head;
 public:
-	List();						//List constructor			
-	~List();					//List destructor
-	void push_back(T data);		//adds new element to the end of the list
+	Sparse_List();				//Sparse_List constructor			
+	~Sparse_List();				//Sparse_List destructor
+	void push_back(T data);		//adds new element to the end of the Sparse_List
 	T& operator[](int index);	//gets the element by some index
 	int find_by_data(T data);
 	T& find_by_condition(string op, int num);
 };
 
 template <typename T>
-List<T>::~List() {
+Sparse_List<T>::~Sparse_List() {
 
 }
 
 template <typename T>
-List<T>::List() {								
+Sparse_List<T>::Sparse_List() {								
 	Size = 0;
 	head = NULL;
 }
 
 template<typename T>
-void List<T>::push_back(T data)
+void Sparse_List<T>::push_back(T data)
 {
-	if (head == nullptr)					//if the list is empty
-	{					
-		head = new Node<T>(data);
-	}
-	else									//if the list is not empty
-	{									
-		Node<T>* current = this->head;
-		while (current->pNext != nullptr)
-		{
-			current = current->pNext;
+	if (data != 0) {
+		if (head == nullptr)					//if the Sparse_List is empty
+		{					
+			head = new Node<T>(data, Size);
 		}
-		current->pNext = new Node<T>(data);
+		else									//if the Sparse_List is not empty
+		{									
+			Node<T>* current = this->head;
+			while (current->pNext != nullptr)
+			{
+				current = current->pNext;
+			}
+			current->pNext = new Node<T>(data, Size);
+		}
 	}
 	this->Size++;
 }
 
 template <typename T>
-T& List<T>::operator[](int index) {
+T& Sparse_List<T>::operator[](int index) {
 	int counter = 0;
 	Node<T>* current = this->head;
 	while (current != nullptr)
 	{
-		if (counter == index)				
+		if (current->index == index)				
 		{
 			return current->data;
 		}
@@ -75,23 +80,21 @@ T& List<T>::operator[](int index) {
 }
 
 template<typename T>
-int List<T>::find_by_data(T data)
+int Sparse_List<T>::find_by_data(T data)
 {
 	Node<T>* current = head;
-	int counter = 0;
 	while (current != nullptr) {
 		if (current->data == data) {
-			return counter;
+			return current->index;
 		}
 		current = current->pNext;
-		counter++;
 	}
 	cout << "There is no data: " << data << endl;
 	return 0;
 }
 
 template<typename T>
-T& List<T>::find_by_condition(string op, int num)
+T& Sparse_List<T>::find_by_condition(string op, int num)
 {
 	Node<T>* current = head;
 	if (op == ">") {
@@ -135,12 +138,27 @@ T& List<T>::find_by_condition(string op, int num)
 		}
 	}
 }
+#pragma endregion
 
 int main() {
-	List<int> list;
-	for (int i = 0; i < 10; i++) {
-		list.push_back(i+2);
-	}
-	cout << list.find_by_condition("!=", 2);
+	Sparse_List<int> sparse_List;
+	int op;
+	do{
+		system("cls");
+		cout << "1. push_back()\n";
+		cin >> op;
+		switch (op)
+		{
+		case 1:
+			int i;
+			system("cls");
+			cout << "Enter number to add: "; cin >> i;
+			sparse_List.push_back(i);
+			break;
+		default:
+			break;
+		}
+	} while (op != 0);
 	return 1;
 }
+
