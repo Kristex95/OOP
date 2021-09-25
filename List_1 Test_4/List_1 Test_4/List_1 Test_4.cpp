@@ -26,6 +26,7 @@ public:
 	void push_back(T data);		//adds new element to the end of the list
 	T& operator[](int index);	//gets the element by some index
 	int find_by_data(T data);
+	T& find_by_condition(string op, int num);
 };
 
 template <typename T>
@@ -64,7 +65,7 @@ T& List<T>::operator[](int index) {
 	Node<T>* current = this->head;
 	while (current != nullptr)
 	{
-		if (counter == index)
+		if (counter == index)				
 		{
 			return current->data;
 		}
@@ -89,11 +90,57 @@ int List<T>::find_by_data(T data)
 	return 0;
 }
 
+template<typename T>
+T& List<T>::find_by_condition(string op, int num)
+{
+	Node<T>* current = head;
+	if (op == ">") {
+		while (current != nullptr) {
+			if (current->data > num) {
+				return current->data;
+			}
+			current = current->pNext;
+		}
+	}
+	else if (op == "<") {
+		while (current != nullptr) {
+			if (current->data < num) {
+				return current->data;
+			}
+			current = current->pNext;
+		}
+	}
+	else if (op == ">=") {
+		while (current != nullptr) {
+			if (current->data >= num) {
+				return current->data;
+			}
+			current = current->pNext;
+		}
+	}
+	else if (op == "<=") {
+		while (current != nullptr) {
+			if (current->data <= num) {
+				return current->data;
+			}
+			current = current->pNext;
+		}
+	}
+	else if (op == "!=") {
+		while (current != nullptr) {
+			if (current->data != num) {
+				return current->data;
+			}
+			current = current->pNext;
+		}
+	}
+}
+
 int main() {
 	List<int> list;
 	for (int i = 0; i < 10; i++) {
 		list.push_back(i+2);
 	}
-	cout << "Data index: " << list.find_by_data(5);
+	cout << list.find_by_condition("!=", 2);
 	return 1;
 }
