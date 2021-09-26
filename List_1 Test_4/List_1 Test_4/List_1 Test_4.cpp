@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <typeinfo>
 using namespace std;
 
 #pragma region Sparse_List
@@ -140,20 +141,128 @@ T& Sparse_List<T>::find_by_condition(string op, int num)
 }
 #pragma endregion
 
+#pragma region Sparse_Matrix
+template <typename T>
+class Sparse_Matrix {
+	template <typename T>
+	class Node {
+
+	public:
+		int i;
+		int j;
+		T data;
+		Node* pNext;
+
+		Node(int i = NULL, int j = NULL, T data = T(), Node* pNext = nullptr) {
+			this->i = i;
+			this->j = j;
+			this->data = data;
+			this->pNext = pNext;
+		}
+	};
+
+	Node<T>* head;
+public:
+	Sparse_Matrix();
+	void push_back(int i, int j, T data);
+	int find_by_indexes(int i, int j);
+	void find_by_data(T _data);
+};
+	
+template <typename T>
+Sparse_Matrix<T>::Sparse_Matrix() {
+	head = nullptr;
+}
+
+template<typename T>
+void Sparse_Matrix<T>::push_back(int i, int j, T data)
+{
+	if (data != 0) {
+		if (head == nullptr)					//if the Sparse_List is empty
+		{
+			head = new Node<T>(i, j, data);
+		}
+		else									//if the Sparse_List is not empty
+		{
+			Node<T>* current = this->head;
+			while (current->pNext != nullptr)
+			{
+				current = current->pNext;
+			}
+			current->pNext = new Node<T>(i, j, data);
+		}
+	}
+}
+
+template<>
+int Sparse_Matrix<int>::find_by_indexes(int i, int j)
+{
+	Node<int>* current = this->head;
+	while (current != nullptr) {
+		if (i == current->i) {
+			if (j == current->j) {
+				return current->data;
+			}
+		}
+		current = current->pNext;
+	}
+	return 0;
+}
+
+template<typename T>
+void Sparse_Matrix<T>::find_by_data(T _data)
+{
+	if(data == 0){
+		cout << "Element can't be equal to 0";
+		return;
+	}
+	bool found = false;
+	Node<int>* current = this->head;
+	while (current != nullptr) {
+		if (current->data == _data){
+			found = true;
+			cout << "index is [" << current->i << "][" << current->j << "]" << endl;
+		}
+		current = current->pNext;
+	}
+	if (!found) {
+		cout << "There is no element " << data << endl;
+	}
+	return;
+}
+
+#pragma endregion
+
 int main() {
+	int i, j, data;
 	Sparse_List<int> sparse_List;
+	Sparse_Matrix<int> sparse_matrix;
 	int op;
 	do{
-		system("cls");
 		cout << "1. push_back()\n";
 		cin >> op;
 		switch (op)
 		{
 		case 1:
-			int i;
 			system("cls");
 			cout << "Enter number to add: "; cin >> i;
 			sparse_List.push_back(i);
+			break;
+		case 2:
+			cout << "Enter i: "; cin >> i;
+			cout << "Enter j: "; cin >> j;
+			cout << "Enter number: "; cin >> data;
+			sparse_matrix.push_back(i, j, data);
+			break;
+		case 3:
+			system("cls");
+			cout << "Enter i: "; cin >> i;
+			cout << "Enter j: "; cin >> j;
+			cout << "Yout element: " << sparse_matrix.find_by_indexes(i, j) << endl;
+			break;
+		case 4:
+			cout << "Enter elemnt: "; cin >> data;
+			sparse_matrix.find_by_data(data);
 			break;
 		default:
 			break;
