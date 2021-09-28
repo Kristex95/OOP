@@ -1,49 +1,42 @@
 ﻿#include <iostream>
 #include <string>
 #include <vector>
+#include <bitset>
 using namespace std;
 
 class CIDR_IPv4 {
-	uint8_t IP[4];
-	uint8_t mask;
+	uint8_t address[4];
+	short subnet_bits;
+	uint8_t network_address[4];
 public:
-	void Set_IP();
-	CIDR_IPv4() : IP() {
-		Set_IP();
+	void Set_address();
+	void Set_Network_Address();
+	CIDR_IPv4(){
+		Set_address();	
+		Set_Network_Address();
 	}
 };
 
-class IPv6 {
-	uint16_t IP[8];
+class CIDR_IPv6 {
+	uint16_t adress[8];
 
 public:
-	void Set_IP();
-	IPv6() : IP() {
-		Set_IP();
+	void Set_adress();
+	CIDR_IPv6() : adress() {
+		Set_adress();
 	}
 };
 
 int main()
 {
-	//IPv6 ipv6;
-	CIDR_IPv4 ipv4;
+	//CIDR_IPv6 IPv6;
+	CIDR_IPv4 IPv4;
 	return 1;
 }
 
-void IPv6::Set_IP() {
-	cout << "Enter new IP adress: ";
-	string buff;
-	for (int i = 0; i < 7; i++) {
-		getline(cin, buff, ':');
-		IP[i] = stoul(buff, nullptr, 16);
-	}
-	getline(cin, buff);
-	IP[7] = stoul(buff, nullptr, 16);
-}
-
-void CIDR_IPv4::Set_IP()
+void CIDR_IPv4::Set_address()
 {
-	cout << "Enter new IP adress: ";
+	cout << "Enter new adress adress (adress/subnet_bits): ";
 	string buff;
 	for (int i = 0; i < 3; i++) {
 		getline(cin, buff, '.');
@@ -54,9 +47,9 @@ void CIDR_IPv4::Set_IP()
 		else if (byte < 0) {
 			byte = 0;
 		}
-		IP[i] = byte;
+		address[i] = byte;
 	}
-	getline(cin, buff);
+	getline(cin, buff, '/');
 	int byte = stoi(buff);
 	if (byte >= 256) {
 		byte = 255;
@@ -64,5 +57,55 @@ void CIDR_IPv4::Set_IP()
 	else if (byte < 0) {
 		byte = 0;
 	}
-	IP[3] = byte;
+	address[3] = byte;
+
+	cin >> subnet_bits;
+	if (subnet_bits < 0) {
+		subnet_bits = 0;
+	}
+	else if (subnet_bits > 32) {
+		subnet_bits = 32;
+	}
+}
+
+void CIDR_IPv4::Set_Network_Address()
+{   
+	uint8_t address[4];
+	for (int i = 0; i < 4; i++) {
+		address[i] = this->address[i];
+	}
+
+	uint8_t mask_bits[4] = {0};
+	int subnet_bits = this->subnet_bits;
+	for (int i = 0; i < 4; i++) {
+		int octet = 0;
+		if (subnet_bits >= 8) {
+			octet = 8;
+			subnet_bits -= 8;
+		}
+		else {
+			octet = subnet_bits % 10;
+		}
+		int degree = 7;
+		while (octet != 0){
+			mask_bits[i] += pow(2, degree);
+			degree--;
+			octet--;
+		}
+	}
+
+	for (int i = 0; i < 4; i++) {
+		this->network_address[i] = this->address[i] & mask_bits[i];
+	}
+}
+
+void CIDR_IPv6::Set_adress() {
+	cout << "Enter new adress adress (adress/subnet_bits): ";
+	string buff;
+	for (int i = 0; i < 7; i++) {
+		getline(cin, buff, ':');
+		adress[i] = stoul(buff, nullptr, 16);
+	}
+	getline(cin, buff, '/');
+	adress[7] = stoul(buff, nullptr, 16);
 }
