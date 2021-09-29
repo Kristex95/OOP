@@ -1,16 +1,19 @@
 ﻿#include <iostream>
 #include <string>
 #include <vector>
-#include <bitset>
+#include <sstream>
+
 using namespace std;
 
 class CIDR_IPv4 {
 	uint8_t address[4];
 	short subnet_bits;
 	uint8_t network_address[4];
-public:
+
 	void Set_address();
 	void Set_Network_Address();
+public:
+	void Check_Belonging(string input_ip);
 	CIDR_IPv4(){
 		Set_address();	
 		Set_Network_Address();
@@ -31,6 +34,7 @@ int main()
 {
 	//CIDR_IPv6 IPv6;
 	CIDR_IPv4 IPv4;
+	IPv4.Check_Belonging("192.0.1.1");
 	return 1;
 }
 
@@ -77,6 +81,7 @@ void CIDR_IPv4::Set_Network_Address()
 
 	uint8_t mask_bits[4] = {0};
 	int subnet_bits = this->subnet_bits;
+
 	for (int i = 0; i < 4; i++) {
 		int octet = 0;
 		if (subnet_bits >= 8) {
@@ -97,6 +102,22 @@ void CIDR_IPv4::Set_Network_Address()
 	for (int i = 0; i < 4; i++) {
 		this->network_address[i] = this->address[i] & mask_bits[i];
 	}
+}
+
+void CIDR_IPv4::Check_Belonging(string input_ip)
+{
+	char delim = '.';
+	uint8_t user_ip[4];
+	stringstream sstream(input_ip);
+	string buff;
+	for (int i = 0; i < 3; i++) {
+		getline(sstream, buff, delim);
+		user_ip[i] = stoi(buff);
+	}
+	getline(sstream, buff);
+	user_ip[3] = stoi(buff);
+
+
 }
 
 void CIDR_IPv6::Set_adress() {

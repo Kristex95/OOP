@@ -1,5 +1,5 @@
 ﻿  List_2 Test_7.cpp
-F:\Учеба\2-й_Курс\Об'єктно Орієнтоване Програмування\OOP\List_2 Test_7\List_2 Test_7\List_2 Test_7.cpp(91,34): warning C4244: +=: преобразование "double" в "uint8_t", возможна потеря данных
-F:\Учеба\2-й_Курс\Об'єктно Орієнтоване Програмування\OOP\List_2 Test_7\List_2 Test_7\List_2 Test_7.cpp(107,20): warning C4244: =: преобразование "unsigned long" в "uint16_t", возможна потеря данных
-F:\Учеба\2-й_Курс\Об'єктно Орієнтоване Програмування\OOP\List_2 Test_7\List_2 Test_7\List_2 Test_7.cpp(110,19): warning C4244: =: преобразование "unsigned long" в "uint16_t", возможна потеря данных
+F:\Учеба\2-й_Курс\Об'єктно Орієнтоване Програмування\OOP\List_2 Test_7\List_2 Test_7\List_2 Test_7.cpp(96,34): warning C4244: +=: преобразование "double" в "uint8_t", возможна потеря данных
+F:\Учеба\2-й_Курс\Об'єктно Орієнтоване Програмування\OOP\List_2 Test_7\List_2 Test_7\List_2 Test_7.cpp(126,20): warning C4244: =: преобразование "unsigned long" в "uint16_t", возможна потеря данных
+F:\Учеба\2-й_Курс\Об'єктно Орієнтоване Програмування\OOP\List_2 Test_7\List_2 Test_7\List_2 Test_7.cpp(129,19): warning C4244: =: преобразование "unsigned long" в "uint16_t", возможна потеря данных
   List_2 Test_7.vcxproj -> F:\Учеба\2-й_Курс\Об'єктно Орієнтоване Програмування\OOP\List_2 Test_7\Debug\List_2 Test_7.exe
