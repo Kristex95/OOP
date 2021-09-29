@@ -9,14 +9,17 @@ class CIDR_IPv4 {
 	uint8_t address[4];
 	short subnet_bits;
 	uint8_t network_address[4];
+	uint8_t max_address[4];
 
 	void Set_address();
 	void Set_Network_Address();
+	void Set_Max_Address();
 public:
 	void Check_Belonging(string input_ip);
 	CIDR_IPv4(){
 		Set_address();	
 		Set_Network_Address();
+		Set_Max_Address();
 	}
 };
 
@@ -34,7 +37,12 @@ int main()
 {
 	//CIDR_IPv6 IPv6;
 	CIDR_IPv4 IPv4;
-	IPv4.Check_Belonging("192.0.1.1");
+
+	string check_ip;
+	while (true) {
+		cout << "Enter IP to check (IPv4): "; cin >> check_ip;
+		IPv4.Check_Belonging(check_ip);
+	}
 	return 1;
 }
 
@@ -84,23 +92,46 @@ void CIDR_IPv4::Set_Network_Address()
 
 	for (int i = 0; i < 4; i++) {
 		int octet = 0;
-		if (subnet_bits >= 8) {
-			octet = 8;
-			subnet_bits -= 8;
-		}
-		else {
-			octet = subnet_bits % 10;
-		}
-		int degree = 7;
-		while (octet != 0){
-			mask_bits[i] += pow(2, degree);
-			degree--;
-			octet--;
+		if (subnet_bits != 0) {
+			if (subnet_bits >= 8) {
+				octet = 8;
+				subnet_bits -= 8;
+			}
+			else {
+				octet = subnet_bits % 10;
+				subnet_bits -= octet;
+			}
+			int degree = 7;
+			while (octet != 0) {
+				mask_bits[i] += pow(2, degree);
+				degree--;
+				octet--;
+			}
 		}
 	}
 
 	for (int i = 0; i < 4; i++) {
 		this->network_address[i] = this->address[i] & mask_bits[i];
+	}
+}
+
+void CIDR_IPv4::Set_Max_Address() {
+	int subnet_bits = this->subnet_bits;
+	for (int i = 0; i < 4; i++) {
+		max_address[i] = network_address[i];
+		int free_bits = 8;
+		if (subnet_bits >= 8) {
+			subnet_bits -= 8;
+			free_bits = 0;
+		}
+		else if (subnet_bits < 8 && subnet_bits > 0) {
+			free_bits = 8 - subnet_bits % 10;
+			subnet_bits = 0;
+		}
+		while (free_bits != 0) {
+			max_address[i] += pow(2, free_bits - 1);
+			free_bits--;
+		}
 	}
 }
 
@@ -117,7 +148,20 @@ void CIDR_IPv4::Check_Belonging(string input_ip)
 	getline(sstream, buff);
 	user_ip[3] = stoi(buff);
 
+	bool belongs = true;
+	for (int i = 0; i < 4; i++) {
+		if (user_ip[i] >= network_address[i] && user_ip[i] <= max_address[i]) {
 
+		}
+		else {
+			belongs = false;
+			break;
+		}
+	}
+	if (belongs)
+		cout << "Yot IP belongs to the subnet" << endl;
+	else
+		cout << "Your IP does not belongs to the subnet" << endl;
 }
 
 void CIDR_IPv6::Set_adress() {
