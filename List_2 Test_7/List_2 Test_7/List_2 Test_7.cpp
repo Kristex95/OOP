@@ -24,31 +24,35 @@ public:
 };
 
 class CIDR_IPv6 {
-	uint16_t adress[8];
-
+	uint16_t address[8];
+	short prefix_length;
+	uint16_t network_address[8];
 public:
 	void Set_adress();
-	CIDR_IPv6() : adress() {
+	void Set_network_address();
+	CIDR_IPv6() : address() {
 		Set_adress();
+		Set_network_address();
 	}
 };
 
 int main()
 {
-	//CIDR_IPv6 IPv6;
+	/*
 	CIDR_IPv4 IPv4;
-
 	string check_ip;
 	while (true) {
-		cout << "Enter IP to check (IPv4): "; cin >> check_ip;
+		cout << "Enter IP address to check (IPv4): "; cin >> check_ip;
 		IPv4.Check_Belonging(check_ip);
 	}
+	*/
+	CIDR_IPv6 IPv6;
 	return 1;
 }
 
 void CIDR_IPv4::Set_address()
 {
-	cout << "Enter new adress adress (adress/subnet_bits): ";
+	cout << "Enter new adress adress (address/subnet_bits): ";
 	string buff;
 	for (int i = 0; i < 3; i++) {
 		getline(cin, buff, '.');
@@ -165,12 +169,49 @@ void CIDR_IPv4::Check_Belonging(string input_ip)
 }
 
 void CIDR_IPv6::Set_adress() {
-	cout << "Enter new adress adress (adress/subnet_bits): ";
+	cout << "Enter new adress adress (address/subnet_bits): ";
 	string buff;
 	for (int i = 0; i < 7; i++) {
 		getline(cin, buff, ':');
-		adress[i] = stoul(buff, nullptr, 16);
+		this->address[i] = stoul(buff, nullptr, 16);
 	}
 	getline(cin, buff, '/');
-	adress[7] = stoul(buff, nullptr, 16);
+	this->address[7] = stoul(buff, nullptr, 16);
+	cin >> prefix_length;
+}
+
+void CIDR_IPv6::Set_network_address()
+{
+	uint16_t address[8];
+	for (int i = 0; i < 8; i++) {
+		address[i] = this->address[i];
+	}
+
+	uint16_t mask_bits[8] = { 0 };
+	int prefix_length = this->prefix_length;
+
+	for (int i = 0; i < 8; i++) {
+		int sixteenth = 0;
+		if (prefix_length != 0) {
+			if (prefix_length >= 8) {
+				sixteenth = 16;
+				prefix_length -= 16;
+			}
+			else {
+				sixteenth = prefix_length % 10;
+				prefix_length -= sixteenth;
+			}
+			int degree = 15;
+			while (sixteenth != 0) {
+				mask_bits[i] += pow(2, degree);
+				degree--;
+				sixteenth--;
+			}
+		}
+	}
+
+	for (int i = 0; i < 8; i++) {
+		this->network_address[i] = this->address[i] & mask_bits[i];
+	}
+
 }
