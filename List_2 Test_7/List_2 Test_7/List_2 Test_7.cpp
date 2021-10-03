@@ -193,13 +193,13 @@ void CIDR_IPv6::Set_network_address()
 	for (int i = 0; i < 8; i++) {
 		int sixteenth = 0;
 		if (prefix_length != 0) {
-			if (prefix_length >= 8) {
+			if (prefix_length >= 16) {
 				sixteenth = 16;
 				prefix_length -= 16;
 			}
 			else {
-				sixteenth = prefix_length % 10;
-				prefix_length -= sixteenth;
+				sixteenth = prefix_length;
+				prefix_length = 0;
 			}
 			int degree = 15;
 			while (sixteenth != 0) {
