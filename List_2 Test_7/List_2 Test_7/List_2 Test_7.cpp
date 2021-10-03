@@ -15,7 +15,7 @@ class CIDR_IPv4 {
 	void Set_Network_Address();
 	void Set_Max_Address();
 public:
-	void Check_Belonging(string input_ip);
+	int Check_Belonging(string input_ip);
 	CIDR_IPv4(){
 		Set_address();	
 		Set_Network_Address();
@@ -27,12 +27,17 @@ class CIDR_IPv6 {
 	uint16_t address[8];
 	short prefix_length;
 	uint16_t network_address[8];
-public:
+	uint16_t max_address[8];
 	void Set_adress();
 	void Set_network_address();
+	void Set_Max_Address();
+public:
+	
+	int Check_Belonging(string input_ip);
 	CIDR_IPv6() : address() {
 		Set_adress();
 		Set_network_address();
+		Set_Max_Address();
 	}
 };
 
@@ -44,9 +49,18 @@ int main()
 	while (true) {
 		cout << "Enter IP address to check (IPv4): "; cin >> check_ip;
 		IPv4.Check_Belonging(check_ip);
+		break;
 	}
 	*/
 	CIDR_IPv6 IPv6;
+	string check_ip;
+	cout << "Enter IP address to check (IPv6): "; cin >> check_ip;
+	if (IPv6.Check_Belonging(check_ip)) {
+		cout << "Your IP belongs to the subnet!" << endl;
+	}
+	else {
+		cout << "Your IP doesn't belongs to the subnet!" << endl;
+	}
 	return 1;
 }
 
@@ -129,7 +143,7 @@ void CIDR_IPv4::Set_Max_Address() {
 			free_bits = 0;
 		}
 		else if (subnet_bits < 8 && subnet_bits > 0) {
-			free_bits = 8 - subnet_bits % 10;
+			free_bits = 8 - subnet_bits;
 			subnet_bits = 0;
 		}
 		while (free_bits != 0) {
@@ -139,7 +153,7 @@ void CIDR_IPv4::Set_Max_Address() {
 	}
 }
 
-void CIDR_IPv4::Check_Belonging(string input_ip)
+int CIDR_IPv4::Check_Belonging(string input_ip)
 {
 	char delim = '.';
 	uint8_t user_ip[4];
@@ -163,9 +177,9 @@ void CIDR_IPv4::Check_Belonging(string input_ip)
 		}
 	}
 	if (belongs)
-		cout << "Yot IP belongs to the subnet" << endl;
+		return 1;
 	else
-		cout << "Your IP does not belongs to the subnet" << endl;
+		return 1;
 }
 
 void CIDR_IPv6::Set_adress() {
@@ -209,9 +223,59 @@ void CIDR_IPv6::Set_network_address()
 			}
 		}
 	}
-
+	//9084:acb:0001:1111:0000:bf14:24ff:ffff
 	for (int i = 0; i < 8; i++) {
 		this->network_address[i] = this->address[i] & mask_bits[i];
 	}
 
+}
+
+void CIDR_IPv6::Set_Max_Address()
+{
+	int prefix_length = this->prefix_length;
+	for (int i = 0; i < 8; i++) {
+		max_address[i] = network_address[i];
+		int free_bits = 16;
+		if (prefix_length >= 16) {
+			prefix_length -= 16;
+			free_bits = 0;
+		}
+		else if (prefix_length < 16 && prefix_length > 0) {
+			free_bits = 16 - prefix_length;
+			prefix_length = 0;
+		}
+		while (free_bits != 0) {
+			max_address[i] += pow(2, free_bits - 1);
+			free_bits--;
+		}
+	}
+}
+
+int CIDR_IPv6::Check_Belonging(string input_ip)
+{
+	char delim = ':';
+	uint16_t user_ip[8];
+	stringstream sstream(input_ip);
+	string buff;
+	for (int i = 0; i < 7; i++) {
+		getline(sstream, buff, delim);
+		user_ip[i] = stoul(buff, nullptr, 16);
+	}
+	getline(sstream, buff);
+	user_ip[7] = stoul(buff, nullptr, 16);
+
+	bool belongs = true;
+	for (int i = 0; i < 8; i++) {
+		if (user_ip[i] >= network_address[i] && user_ip[i] <= max_address[i]) {
+
+		}
+		else {
+			belongs = false;
+			break;
+		}
+	}
+	if (belongs)
+		return 1;
+	else
+		return 0;
 }
