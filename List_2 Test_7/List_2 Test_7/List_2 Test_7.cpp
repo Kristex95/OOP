@@ -11,13 +11,25 @@ class CIDR_IPv4 {
 	uint8_t network_address[4];
 	uint8_t max_address[4];
 
-	void Set_address();
+	void Set_address(string ip);
 	void Set_Network_Address();
 	void Set_Max_Address();
 public:
 	int Check_Belonging(string input_ip);
-	CIDR_IPv4(){
-		Set_address();	
+	CIDR_IPv4() {
+		for (auto i : address) {
+			address[i] = 0;
+		}
+		subnet_bits = 0;
+		for (auto i : network_address) {
+			network_address[i] = 0;
+		}
+		for (auto i : max_address) {
+			max_address[i] = 0;
+		}
+	}
+	CIDR_IPv4(string ip){
+		Set_address(ip);
 		Set_Network_Address();
 		Set_Max_Address();
 	}
@@ -28,46 +40,35 @@ class CIDR_IPv6 {
 	short prefix_length;
 	uint16_t network_address[8];
 	uint16_t max_address[8];
-	void Set_adress();
+	void Set_address(string ip);
 	void Set_network_address();
 	void Set_Max_Address();
 public:
 	
 	int Check_Belonging(string input_ip);
-	CIDR_IPv6() : address() {
-		Set_adress();
+	CIDR_IPv6() {
+		for (auto i : address) {
+			address[i] = 0;
+		}
+		prefix_length = 0;
+		for (auto i : network_address) {
+			network_address[i] = 0;
+		}
+		for (auto i : max_address) {
+			max_address[i] = 0;
+		}
+	}
+	CIDR_IPv6(string ip){
+		Set_address(ip);
 		Set_network_address();
 		Set_Max_Address();
 	}
 };
 
-int main()
-{
-	/*
-	CIDR_IPv4 IPv4;
-	string check_ip;
-	while (true) {
-		cout << "Enter IP address to check (IPv4): "; cin >> check_ip;
-		IPv4.Check_Belonging(check_ip);
-		break;
-	}
-	*/
-	CIDR_IPv6 IPv6;
-	string check_ip;
-	cout << "Enter IP address to check (IPv6): "; cin >> check_ip;
-	if (IPv6.Check_Belonging(check_ip)) {
-		cout << "Your IP belongs to the subnet!" << endl;
-	}
-	else {
-		cout << "Your IP doesn't belongs to the subnet!" << endl;
-	}
-	return 1;
-}
-
-void CIDR_IPv4::Set_address()
+void CIDR_IPv4::Set_address(string buff)
 {
 	cout << "Enter new adress adress (address/subnet_bits): ";
-	string buff;
+	
 	for (int i = 0; i < 3; i++) {
 		getline(cin, buff, '.');
 		int byte = stoi(buff);
@@ -179,12 +180,10 @@ int CIDR_IPv4::Check_Belonging(string input_ip)
 	if (belongs)
 		return 1;
 	else
-		return 1;
+		return 0;
 }
 
-void CIDR_IPv6::Set_adress() {
-	cout << "Enter new adress adress (address/subnet_bits): ";
-	string buff;
+void CIDR_IPv6::Set_address(string buff) {
 	for (int i = 0; i < 7; i++) {
 		getline(cin, buff, ':');
 		this->address[i] = stoul(buff, nullptr, 16);
