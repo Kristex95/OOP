@@ -1,4 +1,6 @@
 # OOP
 My repository for university OOP tasks
 
-IPv6 finished!
+Завершена лабораторная!
+Список 1, завдання 4 (***)
+Список 2, завдання 7 (**) + додаткові завдання a, d(* *)

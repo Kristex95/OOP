@@ -140,6 +140,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="List_1 Test_4.cpp" />
+    <ClCompile Include="Sparse_List.cpp" />
+    <ClCompile Include="Sparse_Matrix.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Sparse_List.h" />
+    <ClInclude Include="Sparse_Matrix.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
