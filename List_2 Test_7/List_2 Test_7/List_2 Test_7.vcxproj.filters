@@ -15,22 +15,28 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="List_2 Test_7.cpp">
+    <ClCompile Include="..\..\Lab_1 combination\Lab_1 combination\main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="CIDR_IPv4.cpp">
+    <ClCompile Include="..\..\Lab_1 combination\Lab_1 combination\CIDR_IPv6.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="CIDR_IPv6.cpp">
+    <ClCompile Include="..\..\Lab_1 combination\Lab_1 combination\CIDR_IPv4.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CIDR_IPv4.h">
+    <ClInclude Include="..\..\Lab_1 combination\Lab_1 combination\CIDR_IPv6.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="CIDR_IPv6.h">
+    <ClInclude Include="..\..\Lab_1 combination\Lab_1 combination\CIDR_IPv4.h">
       <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Lab_1 combination\Lab_1 combination\Sparse_List.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Lab_1 combination\Lab_1 combination\Sparse_Matrix.h">
+      <Filter>Исходные файлы</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

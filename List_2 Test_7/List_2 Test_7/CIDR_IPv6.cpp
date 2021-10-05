@@ -25,11 +25,17 @@ void CIDR_IPv6::Set_address(string buff) {
 	stringstream sstream(buff);
 	for (int i = 0; i < 7; i++) {
 		getline(sstream, buff, ':');
+		if(buff.length() > 4){
+			throw invalid_argument("Invalid argumet in ip address");
+		}
 		this->address[i] = stoul(buff, nullptr, 16);
 	}
 	getline(sstream, buff, '/');
+	if (buff.length() > 4) {
+		throw invalid_argument("Invalid argumet in ip address");
+	}
 	this->address[7] = stoul(buff, nullptr, 16);
-	getline(sstream, buff, '/');
+	getline(sstream, buff);
 	this->prefix_length = stoi(buff);
 }
 
@@ -90,7 +96,7 @@ void CIDR_IPv6::Set_Max_Address()
 	}
 }
 
-int CIDR_IPv6::Check_Belonging(string input_ip)
+bool CIDR_IPv6::Check_Belonging(string input_ip)
 {
 	char delim = ':';
 	uint16_t user_ip[8];
@@ -113,8 +119,32 @@ int CIDR_IPv6::Check_Belonging(string input_ip)
 			break;
 		}
 	}
-	if (belongs)
-		return 1;
-	else
-		return 0;
+	return belongs;
+}
+
+string CIDR_IPv6::To_string() {
+	string res;
+	string num = "0123456789abcdef";
+	uint16_t address[8];
+	for (int i = 0; i < 8; i++) {
+		address[i] = this->address[i];
+	}
+	
+	for (int i = 0; i < 7; i++) {
+		int t = pow(16, 3);
+		for (int j = 0; j < 4; j++) {
+			res += num[address[i] / t];
+			address[i] = address[i] % t;
+			t /= 16;
+		}
+		res += address[i] + ':';
+	}
+	int t = pow(16, 3);
+	for (int j = 0; j < 4; j++) {
+		res += num[address[7] / t];
+		address[7] = address[7] % t;
+		t /= 16;
+	}
+	res += address[7] + "/" + to_string(prefix_length);
+	return res;
 }

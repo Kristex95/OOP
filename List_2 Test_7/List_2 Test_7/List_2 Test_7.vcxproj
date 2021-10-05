@@ -18,6 +18,17 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Lab_1 combination\Lab_1 combination\CIDR_IPv4.cpp" />
+    <ClCompile Include="..\..\Lab_1 combination\Lab_1 combination\CIDR_IPv6.cpp" />
+    <ClCompile Include="..\..\Lab_1 combination\Lab_1 combination\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Lab_1 combination\Lab_1 combination\CIDR_IPv4.h" />
+    <ClInclude Include="..\..\Lab_1 combination\Lab_1 combination\CIDR_IPv6.h" />
+    <ClInclude Include="..\..\Lab_1 combination\Lab_1 combination\Sparse_List.h" />
+    <ClInclude Include="..\..\Lab_1 combination\Lab_1 combination\Sparse_Matrix.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -138,15 +149,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="CIDR_IPv4.cpp" />
-    <ClCompile Include="CIDR_IPv6.cpp" />
-    <ClCompile Include="List_2 Test_7.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="CIDR_IPv4.h" />
-    <ClInclude Include="CIDR_IPv6.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

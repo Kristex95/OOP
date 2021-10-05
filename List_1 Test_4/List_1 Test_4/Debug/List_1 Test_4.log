@@ -1,2 +1,4 @@
 ﻿  List_1 Test_4.cpp
+F:\Учеба\2-й_Курс\Об'єктно Орієнтоване Програмування\OOP\List_1 Test_4\List_1 Test_4\Sparse_List.h(79): warning C4715: Sparse_List<int>::operator[]: значение возвращается не при всех путях выполнения
+F:\Учеба\2-й_Курс\Об'єктно Орієнтоване Програмування\OOP\List_1 Test_4\List_1 Test_4\Sparse_List.h(139): warning C4715: Sparse_List<int>::find_by_condition: значение возвращается не при всех путях выполнения
   List_1 Test_4.vcxproj -> F:\Учеба\2-й_Курс\Об'єктно Орієнтоване Програмування\OOP\List_1 Test_4\Debug\List_1 Test_4.exe

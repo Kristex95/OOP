@@ -30,11 +30,11 @@ int main() {
 			break;
 		case 2:
 			cout << "Enter index: "; cin >> i;
-			cout << "Your element: " << sparse_List[i];
+			cout << "Your element: " << sparse_List[i] << endl;
 			break;
 		case 3:
 			cout << "Enter value: "; cin >> data;
-			cout << "The index is: " << sparse_List.find_by_data(data);
+			cout << "The index is: " << sparse_List.find_by_data(data) << endl;
 			break;
 		case 4:
 			cout << "Enter operation (<, > , <=, >=, !=): "; cin >> operation;
