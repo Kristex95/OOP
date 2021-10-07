@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 
 using namespace std;
 #pragma once
@@ -20,24 +21,33 @@ class Sparse_Matrix {
 			this->pNext = pNext;
 		}
 	};
-
+	int max_i;
+	int max_j;
 	Node<T>* head;
 public:
-	Sparse_Matrix();
+	Sparse_Matrix(int max_i, int max_j);
 	void push_back(int i, int j, T data);
-	int find_by_indexes(int i, int j);
-	void find_by_data(T _data);
-	int find_by_condition(std::string op, int num);
+	void find_by_data(CIDR_IPv4 _data);
+	CIDR_IPv4 find_by_condition(std::string op, CIDR_IPv4 cidr_ipv4);
+	CIDR_IPv4 find_by_indexes(int i, int j);
 };
 
 template <typename T>
-Sparse_Matrix<T>::Sparse_Matrix() {
+Sparse_Matrix<T>::Sparse_Matrix(int max_i, int max_j) {
+	if (max_i < 0 || max_j < 0) {
+		throw invalid_argument("argument can't be less than 0");
+	}
+	this->max_i = max_i;
+	this->max_j = max_j;
 	head = nullptr;
 }
 
 template<typename T>
 void Sparse_Matrix<T>::push_back(int i, int j, T data)
 {
+	if (i > max_i || j > max_j || i < 0 || j < 0) {
+		throw invalid_argument("Wrong indexes");
+	}
 	if (data != T()) {
 		if (head == nullptr)					//if the Sparse_List is empty
 		{
@@ -55,10 +65,13 @@ void Sparse_Matrix<T>::push_back(int i, int j, T data)
 	}
 }
 
-template<>
-int Sparse_Matrix<int>::find_by_indexes(int i, int j)
+template<typename T>
+CIDR_IPv4 Sparse_Matrix<T>::find_by_indexes(int i, int j)
 {
-	Node<int>* current = this->head;
+	if (i > max_i || j > max_j || i < 0 || j < 0) {
+		throw invalid_argument("Wrong indexes");
+	}
+	Node<CIDR_IPv4>* current = this->head;
 	while (current != nullptr) {
 		if (i == current->i) {
 			if (j == current->j) {
@@ -67,18 +80,18 @@ int Sparse_Matrix<int>::find_by_indexes(int i, int j)
 		}
 		current = current->pNext;
 	}
-	return 0;
+	return CIDR_IPv4();
 }
 
 template<typename T>
-void Sparse_Matrix<T>::find_by_data(T _data)
+void Sparse_Matrix<T>::find_by_data(CIDR_IPv4 _data)
 {
-	if (_data == 0) {
-		cout << "Element can't be equal to 0";
+	if (_data == T()) {
+		cout << "Element can't be equal to (localhost)";
 		return;
 	}
 	bool found = false;
-	Node<int>* current = this->head;
+	Node<CIDR_IPv4>* current = this->head;
 	while (current != nullptr) {
 		if (current->data == _data) {
 			found = true;
@@ -87,18 +100,18 @@ void Sparse_Matrix<T>::find_by_data(T _data)
 		current = current->pNext;
 	}
 	if (!found) {
-		cout << "There is no element " << _data << endl;
+		cout << "There is no element " << _data.To_string() << endl;
 	}
 	return;
 }
 
-template<>
-int Sparse_Matrix<int>::find_by_condition(std::string op, int num)
+template<typename T>
+inline CIDR_IPv4 Sparse_Matrix<T>::find_by_condition(std::string op, CIDR_IPv4 cidr_ipv4)
 {
-	Node<int>* current = head;
+	Node<CIDR_IPv4>* current = head;
 	if (op == ">") {
 		while (current != nullptr) {
-			if (current->data > num) {
+			if (current->data > cidr_ipv4) {
 				return current->data;
 			}
 			current = current->pNext;
@@ -106,7 +119,7 @@ int Sparse_Matrix<int>::find_by_condition(std::string op, int num)
 	}
 	else if (op == "<") {
 		while (current != nullptr) {
-			if (current->data < num) {
+			if (current->data < cidr_ipv4) {
 				return current->data;
 			}
 			current = current->pNext;
@@ -114,7 +127,7 @@ int Sparse_Matrix<int>::find_by_condition(std::string op, int num)
 	}
 	else if (op == ">=") {
 		while (current != nullptr) {
-			if (current->data >= num) {
+			if (current->data >= cidr_ipv4) {
 				return current->data;
 			}
 			current = current->pNext;
@@ -122,7 +135,7 @@ int Sparse_Matrix<int>::find_by_condition(std::string op, int num)
 	}
 	else if (op == "<=") {
 		while (current != nullptr) {
-			if (current->data <= num) {
+			if (current->data <= cidr_ipv4) {
 				return current->data;
 			}
 			current = current->pNext;
@@ -130,11 +143,14 @@ int Sparse_Matrix<int>::find_by_condition(std::string op, int num)
 	}
 	else if (op == "!=") {
 		while (current != nullptr) {
-			if (current->data != num) {
+			if (current->data != cidr_ipv4) {
 				return current->data;
 			}
 			current = current->pNext;
 		}
 	}
-	return 0;
+	return CIDR_IPv4();
 }
+
+
+
