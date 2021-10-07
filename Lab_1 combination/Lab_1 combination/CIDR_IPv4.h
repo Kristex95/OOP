@@ -19,5 +19,10 @@ public:
 	CIDR_IPv4();
 	CIDR_IPv4(string ip);
 	friend bool operator!= (const CIDR_IPv4& a, const CIDR_IPv4& b);
+	friend bool operator> (const CIDR_IPv4& a, const CIDR_IPv4& b);
+	friend bool operator< (const CIDR_IPv4& a, const CIDR_IPv4& b);
+	friend bool operator>= (const CIDR_IPv4& a, const CIDR_IPv4& b);
+	friend bool operator<= (const CIDR_IPv4& a, const CIDR_IPv4& b);
+	friend bool operator== (const CIDR_IPv4& a, const CIDR_IPv4& b);
 };
 

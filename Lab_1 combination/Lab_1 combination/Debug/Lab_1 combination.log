@@ -1,2 +1,6 @@
-﻿  main.cpp
+﻿  CIDR_IPv4.cpp
+F:\Учеба\2-й_Курс\Об'єктно Орієнтоване Програмування\OOP\Lab_1 combination\Lab_1 combination\CIDR_IPv4.cpp(79,35): warning C4244: +=: преобразование "double" в "uint8_t", возможна потеря данных
+F:\Учеба\2-й_Курс\Об'єктно Орієнтоване Програмування\OOP\Lab_1 combination\Lab_1 combination\CIDR_IPv4.cpp(105,43): warning C4244: +=: преобразование "double" в "uint8_t", возможна потеря данных
+  main.cpp
+  Создание кода...
   Lab_1 combination.vcxproj -> F:\Учеба\2-й_Курс\Об'єктно Орієнтоване Програмування\OOP\Lab_1 combination\Debug\Lab_1 combination.exe
