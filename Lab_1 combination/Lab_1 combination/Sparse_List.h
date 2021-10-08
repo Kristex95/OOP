@@ -1,5 +1,7 @@
 #include <iostream>
+#include <stdexcept>
 using namespace std;
+
 #pragma once
 template <typename T>
 class Sparse_List {
@@ -25,8 +27,8 @@ class Sparse_List {
 public:
 	Sparse_List();				//Sparse_List constructor					
 	void push_back(T data);		//adds new element to the end of the Sparse_List
-	int operator[](int index);	//gets the element by some index
-	int find_by_data(T data);
+	T operator[](int index);	//gets the element by some index
+	T find_by_data(T data);
 	T& find_by_condition(std::string op, int num);
 };
 
@@ -39,7 +41,7 @@ Sparse_List<T>::Sparse_List() {
 template<typename T>
 void Sparse_List<T>::push_back(T data)
 {
-	if (data != 0) {
+	if (data != T()) {
 		if (head == nullptr)					//if the Sparse_List is empty
 		{
 			head = new Node<T>(data, Size);
@@ -57,29 +59,29 @@ void Sparse_List<T>::push_back(T data)
 	this->Size++;
 }
 
-template<>
-int Sparse_List<int>::operator[](int index) {
-	Node<int>* current = this->head;
-	for(int i = 0; i < Size; i++)
-	{
-		
-		if (i == index)
-		{
-			if (current != nullptr) {
-				if (current->data != 0) {
-					return current->data;
-				}
-			}
-			else {
-				return 0;
-			}
-		}
-		current = current->pNext;
+
+template<typename T>
+T Sparse_List<T>::operator[](int index) {
+	if (index > Size && index < 0) {
+		throw invalid_argument("Invalid index value");
 	}
+	Node<T>* current = this->head;
+	while (current != nullptr) {
+		if (current->index == index) {
+			return current->data;
+		}
+		else if (index < current->index) {
+			return T();
+		}
+		else if (index > current->index) {
+			current = current->pNext;
+		}
+	}
+	return T();
 }
 
 template<typename T>
-int Sparse_List<T>::find_by_data(T data)
+T Sparse_List<T>::find_by_data(T data)
 {
 	Node<T>* current = head;
 	while (current != nullptr) {

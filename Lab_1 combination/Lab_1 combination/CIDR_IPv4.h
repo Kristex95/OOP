@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <string>
 using namespace std;
+
 class CIDR_IPv4 {
 private:
 	uint8_t address[4]; 
@@ -9,10 +10,9 @@ private:
 	uint8_t network_address[4];
 	uint8_t max_address[4];
 
-	
 	void Set_address(string ip);
-	void Set_Network_Address();
-	void Set_Max_Address();
+	void Count_Network_Address();
+	void Count_Max_Address();
 public:
 	string To_string();
 	bool Check_Belonging(string input_ip);

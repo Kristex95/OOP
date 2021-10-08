@@ -1,7 +1,7 @@
 #include <iostream>
 #include <stdexcept>
-
 using namespace std;
+
 #pragma once
 template <typename T>
 class Sparse_Matrix {
@@ -27,9 +27,9 @@ class Sparse_Matrix {
 public:
 	Sparse_Matrix(int max_i, int max_j);
 	void push_back(int i, int j, T data);
-	void find_by_data(CIDR_IPv4 _data);
-	CIDR_IPv4 find_by_condition(std::string op, CIDR_IPv4 cidr_ipv4);
-	CIDR_IPv4 find_by_indexes(int i, int j);
+	void find_by_data(T ip);
+	T find_by_condition(std::string op, T ip);
+	T find_by_indexes(int i, int j);
 };
 
 template <typename T>
@@ -66,12 +66,12 @@ void Sparse_Matrix<T>::push_back(int i, int j, T data)
 }
 
 template<typename T>
-CIDR_IPv4 Sparse_Matrix<T>::find_by_indexes(int i, int j)
+T Sparse_Matrix<T>::find_by_indexes(int i, int j)
 {
 	if (i > max_i || j > max_j || i < 0 || j < 0) {
 		throw invalid_argument("Wrong indexes");
 	}
-	Node<CIDR_IPv4>* current = this->head;
+	Node<T>* current = this->head;
 	while (current != nullptr) {
 		if (i == current->i) {
 			if (j == current->j) {
@@ -80,18 +80,18 @@ CIDR_IPv4 Sparse_Matrix<T>::find_by_indexes(int i, int j)
 		}
 		current = current->pNext;
 	}
-	return CIDR_IPv4();
+	return T();
 }
 
 template<typename T>
-void Sparse_Matrix<T>::find_by_data(CIDR_IPv4 _data)
+void Sparse_Matrix<T>::find_by_data(T _data)
 {
 	if (_data == T()) {
 		cout << "Element can't be equal to (localhost)";
 		return;
 	}
 	bool found = false;
-	Node<CIDR_IPv4>* current = this->head;
+	Node<T>* current = this->head;
 	while (current != nullptr) {
 		if (current->data == _data) {
 			found = true;
@@ -106,9 +106,9 @@ void Sparse_Matrix<T>::find_by_data(CIDR_IPv4 _data)
 }
 
 template<typename T>
-inline CIDR_IPv4 Sparse_Matrix<T>::find_by_condition(std::string op, CIDR_IPv4 cidr_ipv4)
+inline T Sparse_Matrix<T>::find_by_condition(std::string op, T cidr_ipv4)
 {
-	Node<CIDR_IPv4>* current = head;
+	Node<T>* current = head;
 	if (op == ">") {
 		while (current != nullptr) {
 			if (current->data > cidr_ipv4) {
@@ -149,7 +149,7 @@ inline CIDR_IPv4 Sparse_Matrix<T>::find_by_condition(std::string op, CIDR_IPv4 c
 			current = current->pNext;
 		}
 	}
-	return CIDR_IPv4();
+	return T();
 }
 
 

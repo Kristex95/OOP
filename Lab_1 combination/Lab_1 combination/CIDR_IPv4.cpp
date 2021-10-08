@@ -9,14 +9,14 @@ CIDR_IPv4::CIDR_IPv4() {
 		address[i] = 0;
 	}
 	subnet_bits = 8;
-	Set_Network_Address();
-	Set_Max_Address();
+	Count_Network_Address();
+	Count_Max_Address();
 }
 
 CIDR_IPv4::CIDR_IPv4(string ip) {
 	Set_address(ip);
-	Set_Network_Address();
-	Set_Max_Address();
+	Count_Network_Address();
+	Count_Max_Address();
 }
 
 void CIDR_IPv4::Set_address(string buff)
@@ -53,7 +53,7 @@ void CIDR_IPv4::Set_address(string buff)
 	}
 }
 
-void CIDR_IPv4::Set_Network_Address()
+void CIDR_IPv4::Count_Network_Address()
 {
 	uint8_t address[4];
 	for (int i = 0; i < 4; i++) {
@@ -88,7 +88,7 @@ void CIDR_IPv4::Set_Network_Address()
 	}
 }
 
-void CIDR_IPv4::Set_Max_Address() {
+void CIDR_IPv4::Count_Max_Address() {
 	int subnet_bits = this->subnet_bits;
 	for (int i = 0; i < 4; i++) {
 		max_address[i] = network_address[i];

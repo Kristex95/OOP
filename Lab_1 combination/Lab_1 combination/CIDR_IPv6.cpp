@@ -1,24 +1,23 @@
 #include "CIDR_IPv6.h" 
 #include <iostream>
 #include <sstream>
+//ip example 
+//9084:acb:0001:1111:0000:bf14:24ff:ffff
 
 CIDR_IPv6::CIDR_IPv6() {
-	for (auto i : address) {
+	for (int i = 0; i < 7; i++) {
 		address[i] = 0;
 	}
-	prefix_length = 0;
-	for (auto i : network_address) {
-		network_address[i] = 0;
-	}
-	for (auto i : max_address) {
-		max_address[i] = 0;
-	}
+	address[7] = 1;
+	prefix_length = 128;
+	Count_network_address();
+	Count_Max_Address();
 }
 
 CIDR_IPv6::CIDR_IPv6(string ip) {
 	Set_address(ip);
-	Set_network_address();
-	Set_Max_Address();
+	Count_network_address();
+	Count_Max_Address();
 }
 
 void CIDR_IPv6::Set_address(string buff) {
@@ -39,7 +38,7 @@ void CIDR_IPv6::Set_address(string buff) {
 	this->prefix_length = stoi(buff);
 }
 
-void CIDR_IPv6::Set_network_address()
+void CIDR_IPv6::Count_network_address()
 {
 	uint16_t address[8];
 	for (int i = 0; i < 8; i++) {
@@ -68,14 +67,13 @@ void CIDR_IPv6::Set_network_address()
 			}
 		}
 	}
-	//9084:acb:0001:1111:0000:bf14:24ff:ffff
 	for (int i = 0; i < 8; i++) {
 		this->network_address[i] = this->address[i] & mask_bits[i];
 	}
 
 }
 
-void CIDR_IPv6::Set_Max_Address()
+void CIDR_IPv6::Count_Max_Address()
 {
 	int prefix_length = this->prefix_length;
 	for (int i = 0; i < 8; i++) {
@@ -146,5 +144,107 @@ string CIDR_IPv6::To_string() {
 		t /= 16;
 	}
 	res += address[7] + "/" + to_string(prefix_length);
+	return res;
+}
+
+bool operator!=(const CIDR_IPv6& a, const CIDR_IPv6& b)
+{
+	bool res = false;
+	for (int i = 0; i < 8; i++) {
+		if (a.address[i] != b.address[i]) {
+			res = true;
+			break;
+		}
+	}
+	if (a.prefix_length != b.prefix_length) {
+		res = true;
+	}
+	return res;
+}
+
+bool operator>(const CIDR_IPv6& a, const CIDR_IPv6& b)
+{
+	bool res = false;
+	for (int i = 0; i < 8; i++) {
+		if (a.address[i] > b.address[i]) {
+			res = true;
+			break;
+		}
+		else if (a.address[i] == b.address[i]) {
+
+		}
+		else {
+			break;
+		}
+	}
+	return res;
+}
+
+bool operator<(const CIDR_IPv6& a, const CIDR_IPv6& b)
+{
+	bool res = false;
+	for (int i = 0; i < 8; i++) {
+		if (a.address[i] < b.address[i]) {
+			res = true;
+			break;
+		}
+		else if (a.address[i] == b.address[i]) {
+
+		}
+		else {
+			break;
+		}
+	}
+	return res;
+}
+
+bool operator>=(const CIDR_IPv6& a, const CIDR_IPv6& b)
+{
+	bool res = false;
+	for (int i = 0; i < 8; i++) {
+		if (a.address[i] > b.address[i]) {
+			res = true;
+		}
+		else if (a.address[i] == b.address[i]) {
+
+		}
+		else {
+			res = false;
+			break;
+		}
+	}
+	return res;
+}
+
+bool operator<=(const CIDR_IPv6& a, const CIDR_IPv6& b)
+{
+	bool res = false;
+	for (int i = 0; i < 8; i++) {
+		if (a.address[i] < b.address[i]) {
+			res = true;
+		}
+		else if (a.address[i] == b.address[i]) {
+
+		}
+		else {
+			res = false;
+			break;
+		}
+	}
+	return res;
+}
+
+bool operator==(const CIDR_IPv6& a, const CIDR_IPv6& b)
+{
+	bool res = true;
+	for (int i = 0; i < 8; i++) {
+		if (a.address[i] != b.address[i]) {
+			res = false;
+			break;
+		}
+	}
+	if (a.prefix_length != b.prefix_length) {
+		res = false;
+	}
 	return res;
 }
