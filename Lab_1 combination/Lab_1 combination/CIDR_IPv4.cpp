@@ -154,7 +154,10 @@ bool operator!=(const CIDR_IPv4& a, const CIDR_IPv4& b)
 		}
 	}
 	if (a.subnet_bits != b.subnet_bits) {
-		res = true;
+		return true;
+	}
+	else {
+		res = false;
 	}
 	return res;
 }
@@ -164,14 +167,13 @@ bool operator>(const CIDR_IPv4& a, const CIDR_IPv4& b)
 	bool res = false;
 	for (int i = 0; i < 4; i++) {
 		if (a.address[i] > b.address[i]) {
-			res = true;
-			break;
+			return true;
 		}
 		else if (a.address[i] == b.address[i]) {
 
 		}
 		else {
-			break;
+			return false;
 		}
 	}
 	return res;
@@ -182,14 +184,13 @@ bool operator<(const CIDR_IPv4& a, const CIDR_IPv4& b)
 	bool res = false;
 	for (int i = 0; i < 4; i++) {
 		if (a.address[i] < b.address[i]) {
-			res = true;
-			break;
+			return true;
 		}
 		else if (a.address[i] == b.address[i]) {
 
 		}
 		else {
-			break;
+			return false;
 		}
 	}
 	return res;
@@ -199,15 +200,11 @@ bool operator>=(const CIDR_IPv4& a, const CIDR_IPv4& b)
 {
 	bool res = false;
 	for (int i = 0; i < 4; i++) {
-		if (a.address[i] > b.address[i]) {
+		if (a.address[i] >= b.address[i]) {
 			res = true;
 		}
-		else if (a.address[i] == b.address[i]) {
-
-		}
 		else {
-			res = false;
-			break;
+			return false;
 		}
 	}
 	return res;
@@ -217,15 +214,11 @@ bool operator<=(const CIDR_IPv4& a, const CIDR_IPv4& b)
 {
 	bool res = false;
 	for (int i = 0; i < 4; i++) {
-		if (a.address[i] < b.address[i]) {
+		if (a.address[i] <= b.address[i]) {
 			res = true;
 		}
-		else if (a.address[i] == b.address[i]) {
-
-		}
 		else {
-			res = false;
-			break;
+			return false;
 		}
 	}
 	return res;
@@ -241,7 +234,7 @@ bool operator==(const CIDR_IPv4& a, const CIDR_IPv4& b)
 		}
 	}
 	if (a.subnet_bits != b.subnet_bits) {
-		res = false;
+		return false;
 	}
 	return res;
 }

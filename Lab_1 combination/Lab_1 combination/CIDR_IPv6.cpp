@@ -159,6 +159,9 @@ bool operator!=(const CIDR_IPv6& a, const CIDR_IPv6& b)
 	if (a.prefix_length != b.prefix_length) {
 		res = true;
 	}
+	else {
+		res = false;
+	}
 	return res;
 }
 
@@ -192,7 +195,7 @@ bool operator<(const CIDR_IPv6& a, const CIDR_IPv6& b)
 
 		}
 		else {
-			break;
+			return false;
 		}
 	}
 	return res;
@@ -202,11 +205,8 @@ bool operator>=(const CIDR_IPv6& a, const CIDR_IPv6& b)
 {
 	bool res = false;
 	for (int i = 0; i < 8; i++) {
-		if (a.address[i] > b.address[i]) {
+		if (a.address[i] >= b.address[i]) {
 			res = true;
-		}
-		else if (a.address[i] == b.address[i]) {
-
 		}
 		else {
 			res = false;
@@ -220,15 +220,11 @@ bool operator<=(const CIDR_IPv6& a, const CIDR_IPv6& b)
 {
 	bool res = false;
 	for (int i = 0; i < 8; i++) {
-		if (a.address[i] < b.address[i]) {
+		if (a.address[i] <= b.address[i]) {
 			res = true;
 		}
-		else if (a.address[i] == b.address[i]) {
-
-		}
 		else {
-			res = false;
-			break;
+			return false;
 		}
 	}
 	return res;
