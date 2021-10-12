@@ -170,8 +170,7 @@ bool operator>(const CIDR_IPv6& a, const CIDR_IPv6& b)
 	bool res = false;
 	for (int i = 0; i < 8; i++) {
 		if (a.address[i] > b.address[i]) {
-			res = true;
-			break;
+			return true;
 		}
 		else if (a.address[i] == b.address[i]) {
 
@@ -188,8 +187,7 @@ bool operator<(const CIDR_IPv6& a, const CIDR_IPv6& b)
 	bool res = false;
 	for (int i = 0; i < 8; i++) {
 		if (a.address[i] < b.address[i]) {
-			res = true;
-			break;
+			return true;
 		}
 		else if (a.address[i] == b.address[i]) {
 

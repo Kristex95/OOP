@@ -26,7 +26,7 @@ class Sparse_Matrix {
 	Node<T>* head;
 public:
 	Sparse_Matrix(int max_i, int max_j);
-	void push_back(int i, int j, T data);
+	void add(int i, int j, T data);
 	void find_by_data(T ip);
 	T find_by_condition(std::string op, T ip);
 	T find_by_indexes(int i, int j);
@@ -43,7 +43,7 @@ Sparse_Matrix<T>::Sparse_Matrix(int max_i, int max_j) {
 }
 
 template<typename T>
-void Sparse_Matrix<T>::push_back(int i, int j, T data)
+void Sparse_Matrix<T>::add(int i, int j, T data)
 {
 	if (i > max_i || j > max_j || i < 0 || j < 0) {
 		throw invalid_argument("Wrong indexes");
@@ -56,11 +56,16 @@ void Sparse_Matrix<T>::push_back(int i, int j, T data)
 		else									//if the Sparse_List is not empty
 		{
 			Node<T>* current = this->head;
-			while (current->pNext != nullptr)
-			{
-				current = current->pNext;
+			if (current->i == i && current->j == j) {
+				current->data = data;
 			}
-			current->pNext = new Node<T>(i, j, data);
+			else {
+				while (current->pNext != nullptr)
+				{
+					current = current->pNext;
+				}
+				current->pNext = new Node<T>(i, j, data);
+			}
 		}
 	}
 }
@@ -102,7 +107,6 @@ void Sparse_Matrix<T>::find_by_data(T _data)
 	if (!found) {
 		cout << "There is no element " << _data.To_string() << endl;
 	}
-	return;
 }
 
 template<typename T>
@@ -151,6 +155,3 @@ inline T Sparse_Matrix<T>::find_by_condition(std::string op, T cidr_ipv4)
 	}
 	return T();
 }
-
-
-

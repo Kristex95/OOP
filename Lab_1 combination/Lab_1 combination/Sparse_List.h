@@ -5,7 +5,7 @@ using namespace std;
 #pragma once
 template <typename T>
 class Sparse_List {
-
+private:
 	template <typename T>
 	class Node {
 
@@ -15,7 +15,7 @@ class Sparse_List {
 		Node* pNext;
 
 		//Node constructor
-		Node(T data = T(), int index = NULL, Node* pNext = nullptr) {
+		Node(T data = T(), int index = 0, Node* pNext = nullptr) {
 			this->data = data;
 			this->index = index;
 			this->pNext = pNext;
@@ -29,7 +29,7 @@ public:
 	void push_back(T data);		//adds new element to the end of the Sparse_List
 	T operator[](int index);	//gets the element by some index
 	T find_by_data(T data);
-	T& find_by_condition(std::string op, int num);
+	T& find_by_condition(std::string op, T data);
 };
 
 template <typename T>
@@ -95,7 +95,7 @@ T Sparse_List<T>::find_by_data(T data)
 }
 
 template<typename T>
-T& Sparse_List<T>::find_by_condition(std::string op, int num)
+T& Sparse_List<T>::find_by_condition(std::string op, T data)
 {
 	Node<T>* current = head;
 	if (op == ">") {
@@ -105,32 +105,28 @@ T& Sparse_List<T>::find_by_condition(std::string op, int num)
 			}
 			current = current->pNext;
 		}
-	}
-	else if (op == "<") {
+	} else if (op == "<") {
 		while (current != nullptr) {
 			if (current->data < num) {
 				return current->data;
 			}
 			current = current->pNext;
 		}
-	}
-	else if (op == ">=") {
+	} else if (op == ">=") {
 		while (current != nullptr) {
 			if (current->data >= num) {
 				return current->data;
 			}
 			current = current->pNext;
 		}
-	}
-	else if (op == "<=") {
+	} else if (op == "<=") {
 		while (current != nullptr) {
 			if (current->data <= num) {
 				return current->data;
 			}
 			current = current->pNext;
 		}
-	}
-	else if (op == "!=") {
+	} else if (op == "!=") {
 		while (current != nullptr) {
 			if (current->data != num) {
 				return current->data;
